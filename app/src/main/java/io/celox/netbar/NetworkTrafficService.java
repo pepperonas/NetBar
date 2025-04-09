@@ -19,7 +19,6 @@ package io.celox.netbar;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +28,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -60,20 +58,8 @@ public class NetworkTrafficService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // Erstelle Intent zum Öffnen der MainActivity beim Tippen auf die Benachrichtigung
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, notificationIntent,
-                PendingIntent.FLAG_IMMUTABLE
-        );
-
-        // Startmeldung in der Statusleiste
-        Notification notification = createNotification("↑ 0 B/s | ↓ 0 B/s");
-        startForeground(NOTIFICATION_ID, notification);
-
-        // Starte das regelmäßige Update
+        startForeground(NOTIFICATION_ID, createNotification("Starting..."));
         handler.post(updateRunnable);
-
         return START_STICKY;
     }
 
@@ -97,40 +83,20 @@ public class NetworkTrafficService extends Service {
                     NotificationManager.IMPORTANCE_LOW
             );
             channel.setDescription("Shows network traffic information");
-            channel.setShowBadge(false); // Keine Badge-Anzeige auf dem App-Icon
-            channel.enableLights(false); // Keine LED-Benachrichtigung
-            channel.enableVibration(false); // Keine Vibration
-            channel.setSound(null, null); // Kein Sound
-
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }
 
     private Notification createNotification(String content) {
-        // Erstelle eine Benachrichtigung, die als Statusleisten-Indikator dient
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_network)
                 .setContentTitle("Network Traffic")
                 .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setOngoing(true)
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomContentView(
-                        createCustomNotificationView(content)
-                )
-                // Entfernt den Zeitstempel aus der Benachrichtigung
-                .setShowWhen(false)
-                // Verhindert Abwischen der Benachrichtigung
                 .setOngoing(true);
 
         return builder.build();
-    }
-
-    private RemoteViews createCustomNotificationView(String content) {
-        RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.status_bar_view);
-        remoteViews.setTextViewText(R.id.status_text, content);
-        return remoteViews;
     }
 
     private void updateTrafficInfo() {
@@ -147,19 +113,17 @@ public class NetworkTrafficService extends Service {
         boolean showUp = prefs.getBoolean("show_up", true);
         boolean showDown = prefs.getBoolean("show_down", true);
 
-        // Formatiere die Netzwerkverkehrsinformationen
-        String statusText = formatTrafficInfo(txDiff, rxDiff, showUp, showDown);
+        String notification = formatTrafficInfo(txDiff, rxDiff, showUp, showDown);
 
-        // Aktualisiere die Benachrichtigung
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, createNotification(statusText));
+        notificationManager.notify(NOTIFICATION_ID, createNotification(notification));
     }
 
     private String formatTrafficInfo(long txBytes, long rxBytes, boolean showUp, boolean showDown) {
         StringBuilder sb = new StringBuilder();
 
         if (showUp) {
-            sb.append("↑ ").append(formatBytesCompact(txBytes)).append("/s");
+            sb.append("↑ ").append(formatBytes(txBytes)).append("/s");
         }
 
         if (showUp && showDown) {
@@ -167,26 +131,12 @@ public class NetworkTrafficService extends Service {
         }
 
         if (showDown) {
-            sb.append("↓ ").append(formatBytesCompact(rxBytes)).append("/s");
+            sb.append("↓ ").append(formatBytes(rxBytes)).append("/s");
         }
 
         return sb.toString();
     }
 
-    // Kompaktere Formatierung für die Statusleiste
-    private String formatBytesCompact(long bytes) {
-        if (bytes < 1024) {
-            return bytes + "B";
-        } else if (bytes < 1024 * 1024) {
-            return String.format("%.0fK", bytes / 1024.0);
-        } else if (bytes < 1024 * 1024 * 1024) {
-            return String.format("%.1fM", bytes / (1024.0 * 1024));
-        } else {
-            return String.format("%.1fG", bytes / (1024.0 * 1024 * 1024));
-        }
-    }
-
-    // Original-Formatierungsmethode für vollständige Darstellung
     private String formatBytes(long bytes) {
         if (bytes < 1024) {
             return bytes + " B";
