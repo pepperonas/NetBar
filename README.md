@@ -29,7 +29,7 @@ bandwidth usage.
 You can install NetBar from:
 
 1. Google Play Store [coming soon]
-2. Direct APK download from the [Releases page](https://github.com/martinpfeffer/netbar/releases)
+2. Direct APK download from the [Releases page](https://github.com/pepperonas/NetBar/releases)
 
 ## Usage
 
