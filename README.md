@@ -2,7 +2,9 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-NetBar is an Android application that displays real-time network traffic information in your device's status bar. It's a lightweight, efficient tool for monitoring your upload and download bandwidth usage.
+NetBar is an Android application that displays real-time network traffic information in your
+device's status bar. It's a lightweight, efficient tool for monitoring your upload and download
+bandwidth usage.
 
 ## Features
 
@@ -32,7 +34,8 @@ You can install NetBar from:
 ## Usage
 
 1. **Launch the app** - Open NetBar after installation
-2. **Configure display options** - Choose which traffic metrics to display (upload, download, or both)
+2. **Configure display options** - Choose which traffic metrics to display (upload, download, or
+   both)
 3. **Start monitoring** - Tap "Start Monitoring" to begin
 4. **Check status bar** - Your network traffic will now be displayed in the status bar
 5. **Stop when desired** - Return to the app and tap "Stop Monitoring" when finished
@@ -88,8 +91,11 @@ limitations under the License.
 ## Contact
 
 Martin Pfeffer
-- GitHub: [martinpfeffer](https://github.com/martinpfeffer)
-- Email: [your-email@example.com]
+
+- GitHub: [martinpfeffer](https://github.com/pepperonas)
+- Email: [martin.pfeffer@celox.io]
+- Website: [https://celox.io]
+- Apps & Tools: [https://mrx3k1.de]
 
 ## Acknowledgments
 
