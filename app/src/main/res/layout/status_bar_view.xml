@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2025 Martin Pfeffer
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,14 +13,19 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
 
-<resources>
-    <string name="app_name">NetBar</string>
-    <string name="monitor_your_network_traffic_in_the_status_bar">Monitor your network traffic in the status bar</string>
-    <string name="display_options">Display Options</string>
-    <string name="show_upload_traffic">Show Upload Traffic</string>
-    <string name="show_download_traffic">Show Download Traffic</string>
-    <string name="start_monitoring">Start Monitoring</string>
-    <string name="stop_monitoring">Stop Monitoring</string>
-    <string name="network_traffic">Network Traffic</string>
-</resources>
+    <TextView
+        android:id="@+id/status_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="↑ 0 B/s | ↓ 0 B/s"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+
+</LinearLayout>
