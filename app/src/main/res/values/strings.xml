@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">NetBar</string>
+    <string name="monitor_your_network_traffic_in_the_status_bar">Monitor your network traffic in the status bar</string>
+    <string name="display_options">Display Options</string>
+    <string name="show_upload_traffic">Show Upload Traffic</string>
+    <string name="show_download_traffic">Show Download Traffic</string>
+    <string name="start_monitoring">Start Monitoring</string>
+    <string name="stop_monitoring">Stop Monitoring</string>
+</resources>
