@@ -19,6 +19,7 @@ package io.celox.netbar;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -35,17 +36,21 @@ import androidx.core.app.NotificationCompat;
 public class NetworkTrafficService extends Service {
     private static final String NOTIFICATION_CHANNEL_ID = "network_monitor_channel";
     private static final int NOTIFICATION_ID = 1;
-    private static final int UPDATE_INTERVAL = 1000; // 1 second
+    private static final int UPDATE_INTERVAL = 1000; // 1 Sekunde
+    private static final int DATA_SAVE_INTERVAL = 60000; // 1 Minute
 
     private Handler handler;
     private Runnable updateRunnable;
     private long lastTxBytes = 0;
     private long lastRxBytes = 0;
+    private long lastSaveTime = 0;
+    private NetworkTrafficManager trafficManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
         createNotificationChannel();
+        trafficManager = NetworkTrafficManager.getInstance(this);
         handler = new Handler();
         updateRunnable = new Runnable() {
             @Override
@@ -89,12 +94,22 @@ public class NetworkTrafficService extends Service {
     }
 
     private Notification createNotification(String content) {
+        // Intent für Klick auf Notification erstellen
+        Intent detailIntent = new Intent(this, TrafficDetailActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                0,
+                detailIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_network)
                 .setContentTitle("Network Traffic")
                 .setContentText(content)
                 .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setOngoing(true);
+                .setOngoing(true)
+                .setContentIntent(pendingIntent); // Hier wird der PendingIntent hinzugefügt
 
         return builder.build();
     }
@@ -117,6 +132,13 @@ public class NetworkTrafficService extends Service {
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(NOTIFICATION_ID, createNotification(notification));
+
+        // Datenpunkte periodisch speichern (alle 60 Sekunden)
+        long currentTime = System.currentTimeMillis();
+        if (currentTime - lastSaveTime >= DATA_SAVE_INTERVAL) {
+            trafficManager.addTrafficData(txDiff, rxDiff);
+            lastSaveTime = currentTime;
+        }
     }
 
     private String formatTrafficInfo(long txBytes, long rxBytes, boolean showUp, boolean showDown) {

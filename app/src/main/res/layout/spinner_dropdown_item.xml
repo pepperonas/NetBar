@@ -14,19 +14,11 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-
-    <!-- App-Farbschema -->
-    <color name="primary">#2C2E3B</color>
-    <color name="primary_dark">#1E202A</color>
-    <color name="accent">#4CAF50</color>
-
-    <!-- Diagrammfarben -->
-    <color name="upload_color">#4CAF50</color>
-    <color name="download_color">#2196F3</color>
-    <color name="upload_color_transparent">#664CAF50</color>
-    <color name="download_color_transparent">#662196F3</color>
-    <color name="grid_color">#33FFFFFF</color>
-</resources>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#383A4A"
+    android:gravity="center_vertical"
+    android:padding="12dp"
+    android:textColor="#FFFFFF"
+    android:textSize="14sp" />

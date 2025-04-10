@@ -100,3 +100,7 @@ Martin Pfeffer
 ## Acknowledgments
 
 - Icon designed using [Android Asset Studio](https://romannurik.github.io/AndroidAssetStudio/)
+
+## Todo
+
+- Store traffic data

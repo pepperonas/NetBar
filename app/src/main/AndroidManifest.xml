@@ -39,6 +39,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".TrafficDetailActivity"
+            android:exported="false" />
+
         <service
             android:name=".NetworkTrafficService"
             android:enabled="true"
