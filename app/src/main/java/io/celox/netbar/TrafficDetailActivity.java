@@ -70,6 +70,10 @@ public class TrafficDetailActivity extends AppCompatActivity {
         chart.setScaleEnabled(true);
         chart.setPinchZoom(true);
         chart.setDrawGridBackground(false);
+        chart.setExtraBottomOffset(10f);
+        chart.setExtraTopOffset(10f);
+        chart.setExtraLeftOffset(10f);
+        chart.setExtraRightOffset(10f);
         chart.setBackgroundColor(getResources().getColor(android.R.color.transparent, null));
 
         // X-Achse konfigurieren
@@ -80,6 +84,9 @@ public class TrafficDetailActivity extends AppCompatActivity {
         xAxis.setGridLineWidth(0.5f);
         xAxis.setGranularity(1f);
         xAxis.setTextColor(getResources().getColor(android.R.color.white, null));
+        xAxis.setTextSize(10f);
+        xAxis.setLabelCount(5);
+        xAxis.setAvoidFirstLastClipping(true);
 
         // Y-Achse konfigurieren
         YAxis leftAxis = chart.getAxisLeft();
@@ -87,10 +94,15 @@ public class TrafficDetailActivity extends AppCompatActivity {
         leftAxis.setDrawGridLines(true);
         leftAxis.setGridColor(ContextCompat.getColor(this, R.color.grid_color));
         leftAxis.setGridLineWidth(0.5f);
+        leftAxis.setTextSize(10f);
+        leftAxis.setAxisMinimum(0f);
         chart.getAxisRight().setEnabled(false);
 
         // Legende konfigurieren
         chart.getLegend().setTextColor(getResources().getColor(android.R.color.white, null));
+        chart.getLegend().setTextSize(12f);
+        chart.getLegend().setFormSize(8f);
+        chart.getLegend().setXEntrySpace(10f);
 
         // Zusätzliche Anpassungen
         chart.setNoDataTextColor(getResources().getColor(android.R.color.white, null));
@@ -178,7 +190,7 @@ public class TrafficDetailActivity extends AppCompatActivity {
         List<Entry> downloadEntries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         for (int i = 0; i < data.size(); i++) {
             NetworkTrafficData point = data.get(i);
@@ -187,13 +199,18 @@ public class TrafficDetailActivity extends AppCompatActivity {
             labels.add(sdf.format(point.getDate()));
         }
 
+        // Einstellung für Datensatzgröße
+        int dataPoints = data.size();
+        boolean showDataPoints = dataPoints <= 30; // Zeige Datenpunkte nur bei wenigen Daten
+
         // Upload-Linie
         LineDataSet uploadDataSet = new LineDataSet(uploadEntries, "Upload (KB/s)");
         uploadDataSet.setColor(getResources().getColor(R.color.upload_color, null));
         uploadDataSet.setCircleColor(getResources().getColor(R.color.upload_color, null));
         uploadDataSet.setCircleRadius(2f);
+        uploadDataSet.setDrawCircles(showDataPoints);
         uploadDataSet.setDrawCircleHole(false);
-        uploadDataSet.setLineWidth(1.5f);
+        uploadDataSet.setLineWidth(2f);
         uploadDataSet.setValueTextSize(9f);
         uploadDataSet.setDrawValues(false);
         uploadDataSet.setDrawFilled(true);
@@ -205,8 +222,9 @@ public class TrafficDetailActivity extends AppCompatActivity {
         downloadDataSet.setColor(getResources().getColor(R.color.download_color, null));
         downloadDataSet.setCircleColor(getResources().getColor(R.color.download_color, null));
         downloadDataSet.setCircleRadius(2f);
+        downloadDataSet.setDrawCircles(showDataPoints);
         downloadDataSet.setDrawCircleHole(false);
-        downloadDataSet.setLineWidth(1.5f);
+        downloadDataSet.setLineWidth(2f);
         downloadDataSet.setValueTextSize(9f);
         downloadDataSet.setDrawValues(false);
         downloadDataSet.setDrawFilled(true);
@@ -215,7 +233,11 @@ public class TrafficDetailActivity extends AppCompatActivity {
 
         // X-Achsenbeschriftung
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
-        chart.getXAxis().setLabelCount(Math.min(5, labels.size()));
+
+        // Anpassen der angezeigten Labels abhängig von der Datenmenge
+        int labelCount = Math.min(5, labels.size());
+        if (labelCount == 0) labelCount = 1;
+        chart.getXAxis().setLabelCount(labelCount, true);
 
         // Daten zum Chart hinzufügen
         LineData lineData = new LineData(uploadDataSet, downloadDataSet);
