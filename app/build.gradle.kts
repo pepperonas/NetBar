@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         applicationId = "io.celox.netbar"
-        minSdk = 24
+        minSdk = 27
         targetSdk = 35
         versionCode = 1
         versionName = "0.0.2"
