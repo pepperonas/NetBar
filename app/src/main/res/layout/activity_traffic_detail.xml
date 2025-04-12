@@ -21,6 +21,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="#2C2E3B"
+    android:fitsSystemWindows="true"
     tools:context=".TrafficDetailActivity">
 
     <!-- Header Card -->
@@ -46,6 +47,13 @@
             android:paddingEnd="16dp"
             android:paddingBottom="12dp">
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/header_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.5" />
+
             <ImageView
                 android:id="@+id/icon_traffic"
                 android:layout_width="24dp"
@@ -66,6 +74,7 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/icon_traffic"
                 app:layout_constraintTop_toTopOf="parent" />
 

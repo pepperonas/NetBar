@@ -16,7 +16,7 @@
 
 <resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.NetBar" parent="Theme.Material3.DayNight">
+    <style name="Base.Theme.NetBar" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- App-Farben -->
         <item name="colorPrimary">@color/accent</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
@@ -29,8 +29,11 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
 
-        <!-- Volle Bildschirmnutzung deaktivieren -->
-        <item name="android:windowFullscreen">false</item>
+        <!-- Füge fitsSystemWindows hinzu -->
+        <item name="android:fitsSystemWindows">true</item>
+
+        <!-- Edge-to-edge Layout aktivieren -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
     <style name="Theme.NetBar" parent="Base.Theme.NetBar" />

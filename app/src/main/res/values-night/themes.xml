@@ -29,7 +29,10 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">false</item>
 
-        <!-- Volle Bildschirmnutzung deaktivieren -->
-        <item name="android:windowFullscreen">false</item>
+        <!-- Füge fitsSystemWindows hinzu -->
+        <item name="android:fitsSystemWindows">true</item>
+
+        <!-- Edge-to-edge Layout aktivieren -->
+        <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 </resources>
